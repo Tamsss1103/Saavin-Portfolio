@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saavin Chinasamy — Barrister at Law</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --royal: #1a2f6e;
+      --royal-mid: #243d8f;
+      --royal-light: #2e50b8;
+      --gold: #c9a84c;
+      --gold-light: #e4c97a;
+      --cream: #f7f4ef;
+      --cream-dark: #ede8df;
+      --text-dark: #0d1b3e;
+      --text-mid: #3a4a72;
+      --text-light: #7b8fb5;
+      --white: #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+    /* CURSOR */
+    * { cursor: none; }
+    .cursor { position: fixed; top:0; left:0; width:10px; height:10px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s,background .2s; }
+    .cursor-ring { position:fixed; top:0; left:0; width:36px; height:36px; border:1.5px solid var(--royal-light); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .25s,height .25s,border-color .25s; }
+
+    /* NOISE */
+    body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; opacity:.5; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.6rem 4rem; background:rgba(247,244,239,0.9); backdrop-filter:blur(16px); border-bottom:1px solid rgba(201,168,76,0.15); transition:padding .3s; }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--royal); letter-spacing:.04em; text-decoration:none; }
+    .nav-logo span { color:var(--gold); font-style:italic; }
+    .nav-links { display:flex; gap:2.8rem; list-style:none; }
+    .nav-links a { font-size:.75rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--text-mid); text-decoration:none; transition:color .25s; position:relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:100%; height:1px; background:var(--gold); transition:right .3s; }
+    .nav-links a:hover { color:var(--royal); }
+    .nav-links a:hover::after { right:0; }
+    .nav-cta { font-size:.75rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; padding:.65rem 1.8rem; background:var(--royal); color:var(--white); text-decoration:none; border:1.5px solid var(--royal); transition:background .3s,color .3s; }
+    .nav-cta:hover { background:transparent; color:var(--royal); }
+
+    /* HERO */
+    #hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; position:relative; overflow:hidden; }
+    .hero-left { background:var(--royal); display:flex; flex-direction:column; justify-content:flex-end; padding:8rem 5rem 6rem 8rem; position:relative; overflow:hidden; animation:slideInLeft .9s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes slideInLeft { from{transform:translateX(-40px);opacity:0} to{transform:none;opacity:1} }
+    .hero-left::before { content:''; position:absolute; top:-60px; right:-60px; width:280px; height:280px; border:1px solid rgba(201,168,76,0.15); border-radius:50%; animation:spinSlow 20s linear infinite; }
+    .hero-left::after { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; border:1px solid rgba(201,168,76,0.08); border-radius:50%; animation:spinSlow 15s linear infinite reverse; }
+    @keyframes spinSlow { to{transform:rotate(360deg)} }
+    .hero-overline { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold-light); margin-bottom:1.6rem; display:flex; align-items:center; gap:1rem; animation:fadeUp .8s .3s both; }
+    .hero-overline::before { content:''; width:36px; height:1px; background:var(--gold); }
+    .hero-name { font-family:'Cormorant Garamond',serif; font-size:clamp(3.2rem,5.5vw,5.5rem); font-weight:300; line-height:1.05; color:var(--white); animation:fadeUp .8s .45s both; }
+    .hero-name em { font-style:italic; font-weight:300; color:var(--gold-light); }
+    .hero-title { font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-top:1.4rem; animation:fadeUp .8s .6s both; }
+    .hero-divider { width:48px; height:1px; background:linear-gradient(to right,var(--gold),transparent); margin:2rem 0; animation:expandWidth .8s .7s both; }
+    @keyframes expandWidth { from{width:0} to{width:48px} }
+    .hero-credentials { display:flex; flex-direction:column; gap:.7rem; animation:fadeUp .8s .75s both; }
+    .credential { font-size:.8rem; color:rgba(255,255,255,0.6); display:flex; align-items:center; gap:.8rem; }
+    .credential::before { content:'◆'; color:var(--gold); font-size:.5rem; flex-shrink:0; }
+    .hero-scroll { margin-top:3rem; display:flex; align-items:center; gap:.9rem; font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,0.3); animation:fadeUp .8s 1s both; }
+    .scroll-line { width:1px; height:52px; background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent); animation:grow 1.5s 1.2s ease both; transform-origin:top; }
+    @keyframes grow { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+
+    .hero-right { background:var(--cream); display:flex; flex-direction:column; justify-content:center; padding:8rem 6rem 6rem 5rem; position:relative; animation:slideInRight .9s cubic-bezier(.16,1,.3,1) .2s both; }
+    @keyframes slideInRight { from{transform:translateX(40px);opacity:0} to{transform:none;opacity:1} }
+    /* photo placeholder – scales if user injects real image */
+    .hero-photo-wrap { width:160px; height:160px; border-radius:50%; overflow:hidden; border:3px solid var(--gold); box-shadow:0 0 0 6px rgba(201,168,76,0.12); margin-bottom:2rem; flex-shrink:0; background:var(--cream-dark); display:flex; align-items:center; justify-content:center; animation:fadeUp .8s .4s both; }
+    .hero-photo-initials { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--royal); }
+    .hero-badge { display:inline-flex; align-items:center; gap:.7rem; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-light); padding:.5rem 1.2rem; margin-bottom:2rem; width:fit-content; animation:fadeUp .8s .5s both; }
+    .badge-dot { width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .hero-intro { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,2.3vw,2rem); font-weight:300; line-height:1.45; color:var(--text-dark); animation:fadeUp .8s .65s both; }
+    .hero-intro strong { font-weight:600; color:var(--royal); }
+    .hero-body { margin-top:1.5rem; font-size:.9rem; line-height:1.9; color:var(--text-mid); max-width:420px; animation:fadeUp .8s .8s both; }
+    .hero-actions { display:flex; gap:1.2rem; margin-top:2.5rem; animation:fadeUp .8s .95s both; }
+    .btn-primary { display:inline-flex; align-items:center; gap:.7rem; padding:.9rem 2rem; background:var(--royal); color:var(--white); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; font-family:'DM Sans',sans-serif; font-weight:500; border:1.5px solid var(--royal); transition:background .3s,transform .2s; }
+    .btn-primary:hover { background:var(--royal-light); transform:translateY(-2px); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:.7rem; padding:.9rem 2rem; background:transparent; color:var(--royal); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; font-family:'DM Sans',sans-serif; font-weight:500; border:1.5px solid var(--royal); transition:background .3s,color .3s,transform .2s; }
+    .btn-secondary:hover { background:var(--royal); color:var(--white); transform:translateY(-2px); }
+    .btn-arrow { transition:transform .25s; }
+    .btn-primary:hover .btn-arrow,.btn-secondary:hover .btn-arrow { transform:translateX(5px); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+
+    /* STATS */
+    #stats { background:var(--royal); padding:3.5rem 0; overflow:hidden; }
+    .stats-grid { max-width:1200px; margin:0 auto; padding:0 4rem; display:grid; grid-template-columns:repeat(4,1fr); }
+    .stat-item { padding:0 2.5rem; border-right:1px solid rgba(255,255,255,0.1); text-align:center; }
+    .stat-item:first-child { border-left:1px solid rgba(255,255,255,0.1); }
+    .stat-number { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--gold-light); line-height:1; }
+    .stat-label { font-size:.7rem; letter-spacing:.13em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-top:.5rem; }
+
+    /* SECTIONS */
+    section { position:relative; z-index:1; }
+    .section-inner { max-width:1200px; margin:0 auto; padding:0 4rem; }
+    .section-label { font-size:.67rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:.9rem; margin-bottom:1rem; }
+    .section-label::before { content:''; width:28px; height:1px; background:var(--gold); }
+    .section-heading { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,4vw,3.4rem); font-weight:300; line-height:1.1; color:var(--text-dark); }
+    .section-heading em { font-style:italic; color:var(--royal-light); }
+
+    /* EXPERTISE */
+    #expertise { padding:8rem 0; background:var(--cream); }
+    .expertise-layout { display:grid; grid-template-columns:1fr 1.6fr; gap:6rem; align-items:start; }
+    .expertise-intro { padding-top:.5rem; }
+    .expertise-body { font-size:.92rem; line-height:1.9; color:var(--text-mid); margin-top:1.5rem; }
+    .expertise-link { display:inline-flex; align-items:center; gap:.6rem; margin-top:1.8rem; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--royal); text-decoration:none; font-weight:500; border-bottom:1px solid var(--gold); padding-bottom:2px; transition:color .2s,gap .2s; }
+    .expertise-link:hover { color:var(--gold); gap:1rem; }
+    .practice-areas { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .practice-card { background:var(--white); padding:2rem 1.8rem; border:1px solid rgba(26,47,110,0.08); border-top:2.5px solid transparent; transition:border-top-color .35s,transform .35s,box-shadow .35s; position:relative; overflow:hidden; }
+    .practice-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(to right,var(--gold),var(--royal-light)); transform:scaleX(0); transform-origin:left; transition:transform .4s ease; }
+    .practice-card:hover { border-top-color:var(--gold); transform:translateY(-4px); box-shadow:0 16px 48px rgba(26,47,110,0.12); }
+    .practice-card:hover::after { transform:scaleX(1); }
+    .practice-icon { font-size:1.6rem; margin-bottom:1rem; }
+    .practice-title { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600; color:var(--royal); margin-bottom:.5rem; }
+    .practice-desc { font-size:.82rem; line-height:1.75; color:var(--text-light); }
+
+    /* EXPERIENCE TIMELINE */
+    #experience { padding:8rem 0; background:var(--cream-dark); }
+    .exp-layout { display:grid; grid-template-columns:1fr 1.8fr; gap:6rem; align-items:start; }
+    .timeline { position:relative; display:flex; flex-direction:column; gap:0; }
+    .timeline::before { content:''; position:absolute; left:11px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--gold),rgba(201,168,76,0.1)); }
+    .tl-item { display:flex; gap:1.8rem; padding-bottom:2.2rem; position:relative; opacity:0; transform:translateX(20px); transition:opacity .5s ease, transform .5s ease; }
+    .tl-item.visible { opacity:1; transform:none; }
+    .tl-dot { width:24px; height:24px; border-radius:50%; background:var(--cream-dark); border:2px solid var(--gold); flex-shrink:0; margin-top:.25rem; position:relative; z-index:1; transition:background .3s; }
+    .tl-item:hover .tl-dot { background:var(--gold); }
+    .tl-body { flex:1; }
+    .tl-role { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:var(--royal); }
+    .tl-org { font-size:.82rem; color:var(--text-mid); margin-top:.2rem; }
+    .tl-date { font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-light); margin-top:.3rem; }
+    .tl-skills { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem; }
+    .skill-tag { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .7rem; background:rgba(26,47,110,0.07); color:var(--royal); border:1px solid rgba(26,47,110,0.12); }
+
+    /* EDUCATION */
+    #education { padding:6rem 0; background:var(--cream); }
+    .edu-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:3rem; }
+    .edu-card { background:var(--white); padding:2.5rem 2.2rem; border:1px solid rgba(26,47,110,0.08); border-left:3px solid var(--gold); transition:transform .3s,box-shadow .3s; }
+    .edu-card:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(26,47,110,0.1); }
+    .edu-degree { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; color:var(--royal); }
+    .edu-school { font-size:.88rem; color:var(--text-mid); margin-top:.4rem; }
+    .edu-year { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-top:.6rem; }
+
+    /* PUBLICATIONS */
+    #publications { padding:8rem 0; background:var(--royal); position:relative; overflow:hidden; }
+    #publications::before { content:''; position:absolute; top:-120px; right:-120px; width:500px; height:500px; border:1px solid rgba(201,168,76,0.07); border-radius:50%; }
+    .pub-top .section-label { color:var(--gold-light); }
+    .pub-top .section-label::before { background:var(--gold-light); }
+    .pub-top .section-heading { color:var(--white); }
+    .pub-top .section-heading em { color:var(--gold-light); }
+    .pub-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:3.5rem; }
+    .pub-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:2.5rem 2.2rem; transition:background .3s,transform .3s; position:relative; overflow:hidden; }
+    .pub-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:0; background:var(--gold); transition:height .4s ease; }
+    .pub-card:hover { background:rgba(255,255,255,0.09); transform:translateY(-3px); }
+    .pub-card:hover::before { height:100%; }
+    .pub-mag { font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:.8rem; }
+    .pub-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400; color:var(--white); line-height:1.35; margin-bottom:.8rem; }
+    .pub-desc { font-size:.83rem; line-height:1.75; color:rgba(255,255,255,0.5); }
+
+    /* APPROACH */
+    #approach { padding:8rem 0; background:var(--cream); }
+    .steps-list { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:3.5rem; }
+    .step { background:var(--white); padding:3rem 2.5rem; border:1px solid rgba(26,47,110,0.07); transition:background .3s,transform .3s; position:relative; overflow:hidden; }
+    .step::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(to right,var(--gold),var(--royal-light)); transform:scaleX(0); transition:transform .4s; }
+    .step:hover { background:rgba(26,47,110,0.02); transform:translateY(-2px); }
+    .step:hover::after { transform:scaleX(1); }
+    .step-num { font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:rgb(218 179 66 / 53%); line-height:1; margin-bottom:1.5rem; }
+    .step-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--royal); margin-bottom:.8rem; }
+    .step-desc { font-size:.85rem; line-height:1.8; color:var(--text-mid); }
+
+    /* CONTACT */
+    #contact { padding:8rem 0; background:var(--cream-dark); }
+    .contact-layout { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; }
+    .contact-body { font-size:.92rem; line-height:1.9; color:var(--text-mid); margin-top:1.4rem; }
+    .contact-promise { display:flex; align-items:flex-start; gap:1rem; margin-top:2.5rem; padding:1.5rem; background:rgba(26,47,110,0.05); border-left:2px solid var(--gold); }
+    .promise-text { font-size:.85rem; line-height:1.75; color:var(--text-mid); }
+    .promise-text strong { color:var(--royal); }
+    .contact-details { display:flex; flex-direction:column; gap:1rem; margin-top:2rem; }
+    .contact-detail { display:flex; align-items:center; gap:1rem; font-size:.88rem; color:var(--text-mid); }
+    .contact-detail-icon { width:36px; height:36px; background:var(--royal); display:flex; align-items:center; justify-content:center; font-size:.9rem; flex-shrink:0; }
+    .contact-form { display:flex; flex-direction:column; gap:1.2rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .form-group { display:flex; flex-direction:column; gap:.45rem; }
+    .form-label { font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-mid); font-weight:500; }
+    .form-input,.form-select,.form-textarea { padding:.85rem 1.1rem; background:var(--white); border:1px solid rgba(26,47,110,0.14); font-family:'DM Sans',sans-serif; font-size:.88rem; color:var(--text-dark); outline:none; transition:border-color .25s,box-shadow .25s; width:100%; -webkit-appearance:none; }
+    .form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--royal); box-shadow:0 0 0 3px rgba(26,47,110,0.07); }
+    .form-textarea { resize:vertical; min-height:120px; }
+    .form-submit { display:inline-flex; align-items:center; gap:.8rem; padding:1rem 2.5rem; background:var(--royal); color:var(--white); font-family:'DM Sans',sans-serif; font-size:.75rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; border:1.5px solid var(--royal); width:fit-content; transition:background .3s,transform .2s; }
+    .form-submit:hover { background:var(--royal-light); transform:translateY(-2px); }
+
+    /* LINKEDIN */
+    #linkedin-cta { background:var(--royal); padding:4rem 0; text-align:center; }
+    .linkedin-inner { display:flex; align-items:center; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+    .linkedin-text { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; color:rgba(255,255,255,0.8); }
+    .linkedin-text em { font-style:italic; color:var(--gold-light); }
+    .btn-linkedin { display:inline-flex; align-items:center; gap:.8rem; padding:.85rem 2rem; background:transparent; border:1.5px solid var(--gold); color:var(--gold); font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; font-family:'DM Sans',sans-serif; font-weight:500; transition:background .3s,color .3s; }
+    .btn-linkedin:hover { background:var(--gold); color:var(--royal); }
+
+    /* FOOTER */
+    footer { background:var(--text-dark); padding:3rem 0; }
+    .footer-inner { max-width:1200px; margin:0 auto; padding:0 4rem; display:flex; align-items:center; justify-content:space-between; }
+    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600; color:rgba(255,255,255,0.6); }
+    .footer-logo span { color:var(--gold); font-style:italic; }
+    .footer-note { font-size:.75rem; color:rgba(255,255,255,0.25); }
+    .footer-badge { font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); opacity:.6; }
+
+    /* REVEAL */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-delay-1 { transition-delay:.1s; }
+    .reveal-delay-2 { transition-delay:.2s; }
+    .reveal-delay-3 { transition-delay:.3s; }
+    .reveal-delay-4 { transition-delay:.4s; }
+    .reveal-left { opacity:0; transform:translateX(-28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal-left.visible { opacity:1; transform:none; }
+
+    /* FLOATING LINES DECORATION */
+    .deco-line { position:absolute; background:linear-gradient(to right,transparent,rgba(201,168,76,0.15),transparent); height:1px; width:100%; pointer-events:none; }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      nav { padding:1.2rem 2rem; }
+      .nav-links { display:none; }
+      #hero { grid-template-columns:1fr; }
+      .hero-left { padding:9rem 2.5rem 4rem; }
+      .hero-right { padding:3rem 2.5rem 5rem; }
+      .expertise-layout,.exp-layout,.contact-layout { grid-template-columns:1fr; gap:3rem; }
+      .stats-grid { grid-template-columns:1fr 1fr; gap:2rem; }
+      .stat-item { border:none; }
+      .steps-list { grid-template-columns:1fr; }
+      .practice-areas,.pub-grid,.edu-grid { grid-template-columns:1fr; }
+      .section-inner,.stats-grid,.footer-inner { padding:0 1.5rem; }
+      #expertise,#experience,#education,#publications,#approach,#contact { padding:5rem 0; }
+      .form-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Saavin <span>Chinasamy</span></a>
+  <ul class="nav-links">
+    <li><a href="#expertise">Practice</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book a Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <span class="hero-overline">Barrister at Law · Port Louis, Mauritius</span>
+    <h1 class="hero-name">Saavin<br><em>Chinasamy</em></h1>
+    <p class="hero-title">Bar at Law</p>
+    <div class="hero-divider"></div>
+    <div class="hero-credentials">
+      <span class="credential">Called to the Utter Bar of England & Wales, 2022</span>
+      <span class="credential">Called to the Bar of Mauritius, 2024</span>
+      <span class="credential">LLB – Middlesex University Mauritius</span>
+      <span class="credential">Contributor — Legal Mau Mag</span>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      <span class="hero-photo-initials">SC</span>
+    </div>
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Open to work · On-site · Hybrid · Remote
+    </div>
+    <p class="hero-intro">
+      A Barrister devoted to<br>
+      <strong>justice, clarity,</strong><br>
+      and every client.
+    </p>
+    <p class="hero-body">
+      Specialising in Criminal, Civil, Family, Commercial, and Property law — Saavin brings rigorous legal training from both England & Wales and Mauritius, combined with a genuine commitment to serving those who need counsel most.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get in Touch <span class="btn-arrow">→</span></a>
+      <a href="#expertise" class="btn-secondary">My Practice <span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Bar Admissions</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">5+</div>
+      <div class="stat-label">Practice Areas</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">LinkedIn Connections</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">Free</div>
+      <div class="stat-label">First Consultation</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="section-inner">
+    <div class="expertise-layout">
+      <div class="expertise-intro reveal-left">
+        <div class="section-label">Practice Areas</div>
+        <h2 class="section-heading">Counsel across<br><em>every matter</em></h2>
+        <p class="expertise-body">
+          From criminal defence to family disputes, commercial agreements to property transactions — Saavin's broad expertise means you have one trusted voice across the full spectrum of legal needs.
+        </p>
+        <a href="#contact" class="expertise-link">Discuss your matter →</a>
+      </div>
+      <div class="practice-areas">
+        <div class="practice-card reveal">
+          <div class="practice-icon">⚖️</div>
+          <div class="practice-title">Criminal Law</div>
+          <p class="practice-desc">Robust defence and prosecution support. Saavin's pupillage at Gavin Glover Chambers honed specialist expertise in criminal proceedings.</p>
+        </div>
+        <div class="practice-card reveal reveal-delay-1">
+          <div class="practice-icon">🏛️</div>
+          <div class="practice-title">Civil Law</div>
+          <p class="practice-desc">Civil disputes, enforcement of rights, and court representation — pursued with precision and a clear strategy tailored to your situation.</p>
+        </div>
+        <div class="practice-card reveal reveal-delay-2">
+          <div class="practice-icon">👨‍👩‍👧</div>
+          <div class="practice-title">Family Law</div>
+          <p class="practice-desc">Sensitive, compassionate legal support through divorce, custody, and family matters — always putting people first.</p>
+        </div>
+        <div class="practice-card reveal reveal-delay-3">
+          <div class="practice-icon">💼</div>
+          <div class="practice-title">Commercial Law</div>
+          <p class="practice-desc">Contract drafting, business disputes, and commercial advisory — sound legal foundations for your ventures.</p>
+        </div>
+        <div class="practice-card reveal">
+          <div class="practice-icon">🏠</div>
+          <div class="practice-title">Property Law</div>
+          <p class="practice-desc">From conveyancing to property disputes, informed by hands-on experience as Director of a Real Estate company in Mauritius.</p>
+        </div>
+        <div class="practice-card reveal reveal-delay-1">
+          <div class="practice-icon">📋</div>
+          <div class="practice-title">Legal Advisory</div>
+          <p class="practice-desc">Clear, practical guidance on compliance, rights, and risk — empowering you to make confident, informed decisions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="exp-layout">
+      <div class="reveal-left">
+        <div class="section-label">Career</div>
+        <h2 class="section-heading">A record<br>built in<br><em>chambers</em></h2>
+        <p style="font-size:.92rem;line-height:1.9;color:var(--text-mid);margin-top:1.5rem;">
+          Trained across multiple renowned chambers in Mauritius, Saavin's path reflects a deliberate, rigorous formation — from pupillage to self-employed practice.
+        </p>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Barrister at Law</div>
+            <div class="tl-org">Self-Employed · Mauritius</div>
+            <div class="tl-date">Sep 2024 – Present</div>
+            <div class="tl-skills"><span class="skill-tag">Civil Law</span><span class="skill-tag">Commercial Law</span><span class="skill-tag">Criminal Law</span><span class="skill-tag">Family Law</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Director</div>
+            <div class="tl-org">Real Estate Company · Part-time · Mauritius</div>
+            <div class="tl-date">Jan 2023 – Present</div>
+            <div class="tl-skills"><span class="skill-tag">Real Estate Law</span><span class="skill-tag">Property Law</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Pupil Barrister</div>
+            <div class="tl-org">Chetan Baboolal Chambers · Full-time · Mauritius</div>
+            <div class="tl-date">Apr 2024 – Jul 2024</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Pupil Barrister</div>
+            <div class="tl-org">Gavin Glover Chambers · Full-time · Mauritius</div>
+            <div class="tl-date">Jan 2024 – Mar 2024</div>
+            <div class="tl-skills"><span class="skill-tag">Criminal Law</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Pupil</div>
+            <div class="tl-org">ENS · Full-time · Mauritius</div>
+            <div class="tl-date">Sep 2023 – Nov 2023</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Pupil Barrister</div>
+            <div class="tl-org">Sanjay Bhuckory Chambers · Port Louis, Mauritius</div>
+            <div class="tl-date">Jun 2023 – Jul 2023</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Pupil</div>
+            <div class="tl-org">Ponambalum Chambers · Part-time · Mauritius</div>
+            <div class="tl-date">Feb 2023 – May 2023</div>
+            <div class="tl-skills"><span class="skill-tag">Civil Law</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-role">Mini Pupillage</div>
+            <div class="tl-org">Sir Hamid Moollan Chambers · Internship</div>
+            <div class="tl-date">Aug 2020 – Sep 2020</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Education</div>
+      <h2 class="section-heading">Academic<br><em>foundations</em></h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-degree">Bachelor of Laws (LLB)</div>
+        <div class="edu-school">Middlesex University Mauritius</div>
+        <div class="edu-year">2018 – 2021</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-degree">Called to the Utter Bar</div>
+        <div class="edu-school">England and Wales</div>
+        <div class="edu-year">2022</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-2">
+        <div class="edu-degree">Called to the Bar of Mauritius</div>
+        <div class="edu-school">Mauritius Supreme Court</div>
+        <div class="edu-year">2024</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-3">
+        <div class="edu-degree">Secondary Education</div>
+        <div class="edu-school">Collège du St Esprit</div>
+        <div class="edu-year">2008 – 2016</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-inner">
+    <div class="pub-top reveal">
+      <div class="section-label">Published Work</div>
+      <h2 class="section-heading">Thought leadership<br><em>in print</em></h2>
+    </div>
+    <div class="pub-grid">
+      <div class="pub-card reveal reveal-delay-1">
+        <div class="pub-mag">Legal Mau Mag · Mini-Mag No. 4</div>
+        <div class="pub-title">Bail Reform in Mauritius: Addressing Inequality and Enhancing Justice</div>
+        <p class="pub-desc">A six-page analytical piece examining systemic disparities in the Mauritian bail system and the implications of the Bail (Amendment) Act 2025 — exploring how transparency and procedural reform can move the system toward greater fairness.</p>
+      </div>
+      <div class="pub-card reveal reveal-delay-2">
+        <div class="pub-mag">Legal Mau Mag · Featured Insight</div>
+        <div class="pub-title">What Makes a Barrister Memorable?</div>
+        <p class="pub-desc">A reflective piece drawing from Saavin's own formation and pupillage experiences — exploring the qualities and character traits that define outstanding advocacy at the Bar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section id="approach">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:0;">
+      <div class="section-label" style="justify-content:center;">
+        <span>How I Work</span>
+      </div>
+      <h2 class="section-heading" style="text-align:center;">A considered <em>approach</em></h2>
+      <p style="font-size:.92rem;line-height:1.85;color:var(--text-mid);max-width:520px;margin:1.2rem auto 0;">Every case is unique. My process is designed to give you clarity and confidence from the very first conversation.</p>
+    </div>
+    <div class="steps-list" style="margin-top:3.5rem;">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Listen & Understand</div>
+        <p class="step-desc">Your situation deserves to be heard fully before any advice is given. No assumptions — just attentive, unbiased listening from the start.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <div class="step-title">Analyse & Advise</div>
+        <p class="step-desc">A thorough review of the law and facts gives you an honest, clear picture of your position and the realistic paths available to you.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <div class="step-title">Act & Advocate</div>
+        <p class="step-desc">With strategy agreed, action is decisive and persistent — with you kept fully informed at every stage of the process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-layout">
+      <div class="reveal-left">
+        <div class="section-label">Get in Touch</div>
+        <h2 class="section-heading">Let's talk about<br>your <em>situation</em></h2>
+        <p class="contact-body">You don't need to have everything figured out before reaching out. A conversation is the first step — and it costs nothing.</p>
+        <p class="contact-body" style="margin-top:.8rem;">Whether criminal, civil, family, commercial or property — Saavin is available and ready to listen.</p>
+        <div class="contact-promise">
+          <span style="font-size:1.3rem;flex-shrink:0;margin-top:.1rem;">🔒</span>
+          <p class="promise-text">
+            <strong>Confidential & without obligation.</strong><br>
+            All initial consultations are strictly private. You are under no obligation to proceed — just clarity, from the very first exchange.
+          </p>
+        </div>
+        <div class="contact-details">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">📍</div>
+            Port Louis, Mauritius
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">💼</div>
+            Available: On-site · Hybrid · Remote
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">in</div>
+            <a href="https://www.linkedin.com/in/saavin-chinasamy-855a25200/" target="_blank" style="color:var(--royal);text-decoration:none;">linkedin.com/in/saavin-chinasamy</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-1">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Your first name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Your last name"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nature of Matter</label>
+          <select class="form-select">
+            <option value="" disabled selected>Select a practice area</option>
+            <option>Criminal Law</option>
+            <option>Civil Law</option>
+            <option>Family Law</option>
+            <option>Commercial Law</option>
+            <option>Property Law</option>
+            <option>Other / Not Sure Yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Brief Description</label>
+          <textarea class="form-textarea" placeholder="Tell me a little about your situation — no legal knowledge required."></textarea>
+        </div>
+        <button type="button" class="form-submit" id="submitBtn">Send Message <span class="btn-arrow">→</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKEDIN -->
+<section id="linkedin-cta">
+  <div class="linkedin-inner reveal">
+    <p class="linkedin-text">Connect professionally on <em>LinkedIn</em></p>
+    <a href="https://www.linkedin.com/in/saavin-chinasamy-855a25200/" target="_blank" class="btn-linkedin">View Profile →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Saavin <span>Chinasamy</span></div>
+    <p class="footer-note">© 2025 · Barrister at Law · All rights reserved</p>
+    <p class="footer-badge">Bar at Law</p>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function anim(){
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    rx+=(mx-rx)*.15;ry+=(my-ry)*.15;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cursor.style.width='16px';cursor.style.height='16px';
+      ring.style.width='54px';ring.style.height='54px';
+      ring.style.borderColor='var(--gold)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cursor.style.width='10px';cursor.style.height='10px';
+      ring.style.width='36px';ring.style.height='36px';
+      ring.style.borderColor='var(--royal-light)';
+    });
+  });
+
+  // Scroll reveal (IntersectionObserver)
+  const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-delay-1,.reveal-delay-2,.reveal-delay-3,.reveal-delay-4');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+  },{threshold:.1});
+  revealEls.forEach(r=>obs.observe(r));
+
+  // Timeline stagger
+  const tlItems = document.querySelectorAll('.tl-item');
+  const tlObs = new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('visible'),i*80);
+      }
+    });
+  },{threshold:.05,rootMargin:'0px 0px -40px 0px'});
+  tlItems.forEach(t=>tlObs.observe(t));
+
+  // Nav shrink
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll',()=>{
+    nav.style.padding = window.scrollY>50?'1rem 4rem':'1.6rem 4rem';
+  });
+
+  // Form submit
+  document.getElementById('submitBtn').addEventListener('click',function(){
+    this.textContent='Message Sent ✓';
+    this.style.background='#2e7d32';
+    this.style.borderColor='#2e7d32';
+    setTimeout(()=>{
+      this.innerHTML='Send Message <span class="btn-arrow">→</span>';
+      this.style.background='';
+      this.style.borderColor='';
+    },3000);
+  });
+
+  // Animated number counter for stats
+  function animateCounter(el, target, suffix=''){
+    let start=0; const dur=1400;
+    const step=ts=>{
+      if(!start) start=ts;
+      const p=Math.min((ts-start)/dur,1);
+      const ease=1-Math.pow(1-p,3);
+      if(target==='500+') el.textContent=p>=1?'500+':Math.floor(ease*500)+'+';
+      else if(isNaN(parseInt(target))) el.textContent=target;
+      else el.textContent=Math.floor(ease*parseInt(target))+suffix;
+      if(p<1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  const statObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const num=e.target.querySelector('.stat-number');
+        const txt=num.textContent;
+        animateCounter(num,txt);
+        statObs.unobserve(e.target);
+      }
+    });
+  },{threshold:.5});
+  document.querySelectorAll('.stat-item').forEach(s=>statObs.observe(s));
+</script>
+</body>
+</html>
